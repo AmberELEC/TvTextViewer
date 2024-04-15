@@ -1,3 +1,5 @@
+DEVICE ?= RG351MP
+
 EXE = text_viewer
 IMGUI_DIR = 3rd_party/imgui
 CXXOPTS_DIR = 3rd_party/cxxopts
@@ -8,7 +10,7 @@ SOURCES += $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 
 CXXFLAGS = -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I$(CXXOPTS_DIR)/include
-CXXFLAGS += -std=c++17 -O2 -Wall -Wformat
+CXXFLAGS += -std=c++17 -O2 -Wall -Wformat -DDEVICE_$(DEVICE)
 CXXFLAGS += -DIMGUI_IMPL_OPENGL_ES2
 CXXFLAGS += `sdl2-config --cflags`
 LIBS = -lGLESv2 -ldl `sdl2-config --libs`

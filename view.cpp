@@ -130,7 +130,9 @@ std::optional<int> View::draw(const ImVec2& windowSize)
   // to be focused initially so we don't do this in that case.
   if (ImGui::IsWindowAppearing() && !mShowYesNoButtons)
   {
-    ImGui::SetNextWindowFocus();
+    ImGui::SetFocusID(ImGui::GetID("Close"), ImGui::GetCurrentWindow());
+    ImGui::GetCurrentContext()->NavDisableHighlight = false;
+    ImGui::GetCurrentContext()->NavDisableMouseHover = true;
   }
 
   // Draw the scrollable region containing the text

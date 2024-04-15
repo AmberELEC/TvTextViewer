@@ -288,7 +288,7 @@ int run(SDL_Window* pWindow, const cxxopts::ParseResult& args)
       if (
         event.type == SDL_QUIT ||
         (event.type == SDL_CONTROLLERBUTTONDOWN &&
-         event.cbutton.button == SDL_CONTROLLER_BUTTON_START) ||
+         event.cbutton.button == SDL_CONTROLLER_BUTTON_INVALID) ||
         (event.type == SDL_WINDOWEVENT &&
          event.window.event == SDL_WINDOWEVENT_CLOSE &&
          event.window.windowID == SDL_GetWindowID(pWindow))
@@ -406,8 +406,17 @@ int main(int argc, char** argv)
 
   // Change the background to red if the --error_display option is given
   if (args.count("error_display")) {
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(ImColor(94, 11, 22, 255))); // Set window background to red
-    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(ImColor(94, 11, 22, 255)));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(100, 0, 0, 255)));
+    ImGui::PushStyleColor(ImGuiCol_NavHighlight, ImVec4(ImColor(180, 0, 0, 255)));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(180, 0, 0, 255)));
+    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(ImColor(180, 0, 0, 255)));
+  }
+  else
+  {
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(175, 135, 0, 255)));
+    ImGui::PushStyleColor(ImGuiCol_NavHighlight, ImVec4(ImColor(210, 160, 0, 255)));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(210, 160, 0, 255)));
+    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(ImColor(210, 160, 0, 255)));
   }
 
   // Apply the requested font size 
@@ -415,6 +424,18 @@ int main(int argc, char** argv)
   {
     ImFontConfig config;
     config.SizePixels = args["font_size"].as<int>();
+    ImGui::GetIO().Fonts->AddFontDefault(&config);
+  }
+  else
+  {
+    ImFontConfig config;
+#if defined(DEVICE_RG351MP)
+    config.SizePixels = 20;
+#elif defined(DEVICE_RG552)
+    config.SizePixels = 48;
+#else
+    config.SizePixels = 13;
+#endif
     ImGui::GetIO().Fonts->AddFontDefault(&config);
   }
 
